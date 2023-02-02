@@ -7,7 +7,8 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "start": "nodemon app"
+    "start": "node app",
+    "dev": "nodemon app"
   },
   "jest": {
     "transform": {
