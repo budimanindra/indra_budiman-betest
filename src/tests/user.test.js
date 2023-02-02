@@ -124,7 +124,7 @@ describe("DELETE /api/user/identity-number/:identityNumber", () => {
     expect(res.body.message).toContain('Unauthorized Access')
   });
   it("cannot delete an unknown user by its identityNumber", async () => {
-    const res = await request(app).delete("/api/user/identity-number/121").set("authorization-token", token)
+    const res = await request(app).delete("/api/user/identity-number/12112313").set("authorization-token", token)
     expect(res.statusCode).toBe(404);
     expect(res.body.message).toContain('No user with that Identity Number')
   });

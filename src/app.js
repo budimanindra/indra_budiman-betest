@@ -8,25 +8,12 @@ dotenv.config()
 
 export const app = express();
 
-const PORT = process.env.APP_PORT || 8000
-
-let DB;
-if (process.env.NODE_ENV === 'development') {
-  DB = process.env.DATABASE_URL
-}
-if (process.env.NODE_ENV === 'test') {
-  DB = process.env.DATABASE_URL_TEST
-}
-
-mongoose.connect(DB, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-const db = mongoose.connection;
-db.on('error', (error) => console.error(error));
-db.once('open', () => console.log('Database Connected'));
+const PORT = process.env.PORT || 8000
 
 app.use(express.json());
+
+app.use('/api/user', userRouter);
+app.use('/api/auth', authRouter);
 
 // for logging
 // app.all('*', function (req, res, next) {
@@ -38,7 +25,18 @@ app.use(express.json());
 //   next()
 // })
 
-app.use('/api/user', userRouter);
-app.use('/api/auth', authRouter);
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+}
 
-app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log("listening for requests");
+  })
+})
