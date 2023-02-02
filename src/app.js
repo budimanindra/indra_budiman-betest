@@ -8,7 +8,7 @@ dotenv.config()
 
 export const app = express();
 
-const PORT = process.env.APP_PORT || 8000
+const PORT = process.env.PORT || 8000
 
 let DB;
 if (process.env.NODE_ENV === 'development') {
@@ -41,4 +41,4 @@ app.use(express.json());
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 
-app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server is running on 0.0.0.0:${PORT}`));
